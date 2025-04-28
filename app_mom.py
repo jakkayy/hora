@@ -43,11 +43,15 @@ def process():
             if two <= 7: pass
             elif two > 7:
                 two -= 7    
-        elif len(str(two)) == 2:
+        elif len(str(two)) == 2 and two > 10:
             n = 0
             for i in range(len(str(two))):
                 n += int(str(two)[i])
             two = n
+            if two <= 7: pass
+            elif two > 7:
+                two -= 7
+        elif two in [10,20]:
             if two <= 7: pass
             elif two > 7:
                 two -= 7
@@ -61,15 +65,31 @@ def process():
         return two
     ch = ch_age(age)
     
+    url_up_down = "https://www.myhora.com/%e0%b8%9b%e0%b8%8f%e0%b8%b4%e0%b8%97%e0%b8%b4%e0%b8%99/%e0%b8%9b%e0%b8%8f%e0%b8%b4%e0%b8%97%e0%b8%b4%e0%b8%99-%e0%b8%9e.%e0%b8%a8."+str(year)+".aspx"
+    ud = requests.get(url_up_down)
+    ud_data = BeautifulSoup(ud.text)
+    r1 = ud_data.find('div', {'id' : "container"})
+    r2 = r1.find('div', {'class' : 'content-main-fullwidth'})
+    r3 = r2.find('div' , {'id' : 'panel1'})
+    r4 = r3.find('div' , {'id' : 'print_div1'})
+    r5 = r4.find_all('div' , {'class' : 'col-mnt'})[int(twelve_year[month])-1]
+    r6 = r5.find('div' , {'class' : 'cal-mcm cal-mc'+str(month)})
+    r7 = r6.find('div' , {'class' : 'cmx-tis'})
+    r8 = r7.find_all('div' , {'class' : 'cmx-ddn cmx-bgz cmx-cx1'})[int(day)-1]
+    r9 = r8.find('div' , {'id' : 'div_1975'+month+day})
+    r10 = r9.find('div' , {'class' : 'cmx-cx6'})
+    r11 = r10.find('font' , {'class' : 'cmx-fs2'})
+    
+    
     
     now = datetime.date.today()
     chinese_zodiac = get_chinese_zodiac(year-543) #ปีนักษัตร
     
-    url = "https://www.myhora.com/%e0%b8%9b%e0%b8%8f%e0%b8%b4%e0%b8%97%e0%b8%b4%e0%b8%99/%e0%b8%9b%e0%b8%8f%e0%b8%b4%e0%b8%97%e0%b8%b4%e0%b8%99-100%e0%b8%9b%e0%b8%b5-%e0%b8%9e.%e0%b8%a8."+str(year)+".aspx"
+    url_ch = "https://www.myhora.com/%e0%b8%9b%e0%b8%8f%e0%b8%b4%e0%b8%97%e0%b8%b4%e0%b8%99/%e0%b8%9b%e0%b8%8f%e0%b8%b4%e0%b8%97%e0%b8%b4%e0%b8%99-100%e0%b8%9b%e0%b8%b5-%e0%b8%9e.%e0%b8%a8."+str(year)+".aspx"
     if 10 <= month_ch[month] <= 12:
-        url = "https://www.myhora.com/%e0%b8%9b%e0%b8%8f%e0%b8%b4%e0%b8%97%e0%b8%b4%e0%b8%99/%e0%b8%9b%e0%b8%8f%e0%b8%b4%e0%b8%97%e0%b8%b4%e0%b8%99-100%e0%b8%9b%e0%b8%b5-%e0%b8%9e.%e0%b8%a8."+str(year-1)+".aspx"
+        url_ch = "https://www.myhora.com/%e0%b8%9b%e0%b8%8f%e0%b8%b4%e0%b8%97%e0%b8%b4%e0%b8%99/%e0%b8%9b%e0%b8%8f%e0%b8%b4%e0%b8%97%e0%b8%b4%e0%b8%99-100%e0%b8%9b%e0%b8%b5-%e0%b8%9e.%e0%b8%a8."+str(year-1)+".aspx"
     
-    res = requests.get(url)
+    res = requests.get(url_ch)
 
     data = BeautifulSoup(res.text)
     round1 = data.find('div', {'class':'rowx'})
@@ -79,6 +99,8 @@ def process():
     main1 = int(day_number)
     main2 = int(seven_day[day])
     main3 = int(round3.text.strip())
+    if int(round3.text.strip()) == 88:
+        main3 = 8
     main4 = int(chinese_zodiac)
     main5 = int(age+1)
     num1 = int(num(main1,main2,main3,main4))
@@ -163,16 +185,20 @@ def process():
                 txt = f"{str(line3[i]):<5}"
             r_line3 += txt
         for i in range(len(line4)):
+            # if len(str(line4[i])) == 1:
+            #     txt = f"{str(line4[i]):<6}"
+            #     if i in [0,6,11]:
+            #         position = f'<span style="color:red">{line4[i]}</span>     '
+            #         txt = f"{position:<6}"
+            # elif len(str(line4[i])) == 2:
+            #     txt = f"{str(line4[i]):<5}"
+            #     if i in [0,6,11]:
+            #         position = f'<span style="color:red">{line4[i]}</span>     '
+            #         txt = f"{position:<5}"
             if len(str(line4[i])) == 1:
                 txt = f"{str(line4[i]):<6}"
-                if i in [0,6,11]:
-                    position = f'<span style="color:red">{line4[i]}</span>     '
-                    txt = f"{position:<6}"
             elif len(str(line4[i])) == 2:
                 txt = f"{str(line4[i]):<5}"
-                if i in [0,6,11]:
-                    position = f'<span style="color:red">{line4[i]}</span>     '
-                    txt = f"{position:<5}"
             r_line4 += txt
         #ans = f"{r_line1}\n{r_line2}\n{r_line3}\n{r_line4}\n\n\n"
         ans = [r_line1,r_line2,r_line3,r_line4]
@@ -214,16 +240,20 @@ def process():
         r_line1 = ""
         for i in range(len(line1)):
             if len(str(line1[i])) == 1:
-                txt = f"{str(line1[i]):<6}"
-                #if i in [0,6]:
-                    # position = f'<span style="color:red">{line1[i]}</span>     '
-                    # txt = f"{str(position):<6}"
+            #     txt = f"{str(line1[i]):<6}"
+            #     if i in [0,6]:
+            #         position = f'<span style="color:red">{line1[i]}</span>     '
+            #         txt = f"{str(position):<6}"
+            # elif len(str(line1[i])) == 2:
+            #     txt = f"{str(line1[i]):<5}"
+            #     if i in [0,6]:
+            #         position = f'<span style="color:red">{line1[i]}</span>     '
+            #         txt = f"{str(position):<5}"
+            #     r_line1 += txt
+             txt = f"{str(line1[i]):<6}"
             elif len(str(line1[i])) == 2:
                 txt = f"{str(line1[i]):<5}"
-                # if i in [0,6]:
-                #     position = f'<span style="color:red">{line1[i]}</span>     '
-                #     txt = f"{str(position):<5}"
-                #r_line1 += txt
+            r_line1 += txt
         for i in range(len(line2)):
             if len(str(line2[i])) == 1:
                 txt = f"{str(line2[i]):<6}"
@@ -441,19 +471,14 @@ def process():
     t3 = table3(num1,main2,num3)
     t4 = table4(num2,only_age)
     t5 = table5(num2,only_age)
-    
-    # result1 = f"วันที่ปัจจุบัน : {now.day}   {now.month}    {now.year+543}\n\n\n"
-    # result2 = f"{num3:>26}\n{main1}  /  {main2}  {main3}  {main4}  /  {main5}\n{num1} {num2:>23}\n\n\n"
-    # result3 = f"{t1}{t2}\n{t3}\n{t4}{t5}"
-    
-    # result = result1 + result2 + result3
-    result1 = f"วันที่ปัจจุบัน : {now.day}   {now.month}    {now.year+543}\n\n\n"
+
+    result1 = f"วันที่ปัจจุบัน : {now.day}   {now.month}    {now.year+543}      {r11.text.strip()}\n\n\n"
     result2 = f"{num3:>26}\n{main1}  /  {main2}  {main3}  {main4}  /  {main5}\n{num1} {num2:>23}\n\n\n"
     result3 = f"{t1[0]}{t2[0]:>108}\n{t1[1]}{t2[1]:>73}\n{t1[2]}{t2[2]:>73}\n{t1[3]}{t2[3]:>69}"
     result4 = f"\n\n\n\n{t3[0]}\n{t3[1]}\n{t3[2]}\n\n\n\n"
     result5 = f"{t4[0]}{t5[0]:>66}\n{t4[1]}{t5[1]:>93}\n{t4[2]}{t5[2]:>93}\n{t5[3]:>142}"
     
-    result = result1 + result2 + result3 + result4 + result5
+    result = result1 + result2 + result3 + result4 + result5 
     
     return jsonify({'result': result})
 
