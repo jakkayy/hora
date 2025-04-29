@@ -65,20 +65,21 @@ def process():
         return two
     ch = ch_age(age)
     
-    url_up_down = "https://www.myhora.com/%e0%b8%9b%e0%b8%8f%e0%b8%b4%e0%b8%97%e0%b8%b4%e0%b8%99/%e0%b8%9b%e0%b8%8f%e0%b8%b4%e0%b8%97%e0%b8%b4%e0%b8%99-%e0%b8%9e.%e0%b8%a8."+str(year)+".aspx"
-    ud = requests.get(url_up_down)
-    ud_data = BeautifulSoup(ud.text)
-    r1 = ud_data.find('div', {'id' : "container"})
-    r2 = r1.find('div', {'class' : 'content-main-fullwidth'})
-    r3 = r2.find('div' , {'id' : 'panel1'})
-    r4 = r3.find('div' , {'id' : 'print_div1'})
-    r5 = r4.find_all('div' , {'class' : 'col-mnt'})[int(twelve_year[month])-1]
-    r6 = r5.find('div' , {'class' : 'cal-mcm cal-mc'+str(month)})
-    r7 = r6.find('div' , {'class' : 'cmx-tis'})
-    r8 = r7.find_all('div' , {'class' : 'cmx-ddn cmx-bgz cmx-cx1'})[int(day)-1]
-    r9 = r8.find('div' , {'id' : 'div_1975'+month+day})
-    r10 = r9.find('div' , {'class' : 'cmx-cx6'})
-    r11 = r10.find('font' , {'class' : 'cmx-fs2'})
+    
+    # url_up_down = "https://www.myhora.com/%e0%b8%9b%e0%b8%8f%e0%b8%b4%e0%b8%97%e0%b8%b4%e0%b8%99/%e0%b8%9b%e0%b8%8f%e0%b8%b4%e0%b8%97%e0%b8%b4%e0%b8%99-%e0%b8%9e.%e0%b8%a8."+str(year)+".aspx"
+    # ud = requests.get(url_up_down)
+    # ud_data = BeautifulSoup(ud.text)
+    # r1 = ud_data.find('div', {'id' : "container"})
+    # r2 = r1.find('div', {'class' : 'content-main-fullwidth'})
+    # r3 = r2.find('div' , {'id' : 'panel1'})
+    # r4 = r3.find('div' , {'id' : 'print_div1'})
+    # r5 = r4.find_all('div' , {'class' : 'col-mnt'})[int(twelve_year[month])-1]
+    # r6 = r5.find('div' , {'class' : 'cal-mcm cal-mc'+str(twelve_year[month])})
+    # r7 = r6.find('div' , {'class' : 'cmx-tis'})
+    # r8 = r7.find_all('div' , {'class' : 'cmx-ddn cmx-bgz cmx-cx1'})[seven_day[day]-1]
+    # r9 = r8.find('div' , {'id' : 'div_'+str(int(year)-543)+str(twelve_year[month])+str(day)})
+    # r10 = r9.find('div' , {'class' : 'cmx-cx4'})
+    # r11 = r10.find('font' , {'class' : 'cmx-fs1'})
     
     
     
@@ -472,7 +473,8 @@ def process():
     t4 = table4(num2,only_age)
     t5 = table5(num2,only_age)
 
-    result1 = f"วันที่ปัจจุบัน : {now.day}   {now.month}    {now.year+543}      {r11.text.strip()}\n\n\n"
+    # result1 = f"วันที่ปัจจุบัน : {now.day}   {now.month}    {now.year+543}      {r11.text.strip()}\n\n\n"
+    result1 = f"วันที่ปัจจุบัน : {now.day}   {now.month}    {now.year+543}\n\n\n"
     result2 = f"{num3:>26}\n{main1}  /  {main2}  {main3}  {main4}  /  {main5}\n{num1} {num2:>23}\n\n\n"
     result3 = f"{t1[0]}{t2[0]:>108}\n{t1[1]}{t2[1]:>73}\n{t1[2]}{t2[2]:>73}\n{t1[3]}{t2[3]:>69}"
     result4 = f"\n\n\n\n{t3[0]}\n{t3[1]}\n{t3[2]}\n\n\n\n"
